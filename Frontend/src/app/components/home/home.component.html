@@ -4,7 +4,7 @@
             <div class="post-body">
                 <p class="post-date">{{post.date}}</p>
                 <h5 class="post-title">
-                    <a  (click)="setPost(post)" [routerLink]="['/', post.link]">{{post.title}}</a>
+                    <a [routerLink]="['/', post.link]">{{post.title}}</a>
                 </h5>
             </div>
         </div>

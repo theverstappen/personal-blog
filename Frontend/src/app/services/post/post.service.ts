@@ -16,6 +16,10 @@ export class PostService {
   getPost(){
     return of(this.post);
   }
+  getSinglePost(link){
+    let data = { 'link': link }
+    return this.http.post('https://us-central1-my-website-208e4.cloudfunctions.net/getSinglePost',data);
+  }
   getPosts(){
     return this.http.get('https://us-central1-my-website-208e4.cloudfunctions.net/getPosts');
   }

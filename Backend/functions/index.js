@@ -7,44 +7,44 @@ const database = admin.database().ref('/blog');
 //const databaseApp = admin.database().ref('/appointments');
 
 const getPostsFromDatabase = (res) => {
-    let posts = [];
+  let posts = [];
 
-    return database.on('value', (snapshot) => {
-        snapshot.forEach((post) => {
-            posts.push({
-                id:      post.key,
-                title:   post.val().title,
-                link:    post.val().link,
-                category:    post.val().category,
-                content: post.val().content,
-                date:    post.val().date
-            });
-        });
-        res.status(200).json(posts);
-    }, (error) => {
-        res.status(error.code).json({
-            message: `Something went wrong. ${error.message}`
-        })
+  return database.on('value', (snapshot) => {
+    snapshot.forEach((post) => {
+      posts.push({
+        id: post.key,
+        title: post.val().title,
+        link: post.val().link,
+        category: post.val().category,
+        content: post.val().content,
+        date: post.val().date
+      });
+    });
+    res.status(200).json(posts);
+  }, (error) => {
+    res.status(error.code).json({
+      message: `Something went wrong. ${error.message}`
     })
+  })
 };
 exports.addPost = functions.https.onRequest((req, res) => {
-    return cors(req, res, () => {
-        if (req.method !== 'POST') {
-            return res.status(401).json({
-                message: 'Not allowed'
-            })
-        }
-        console.log(req.body)
+  return cors(req, res, () => {
+    if (req.method !== 'POST') {
+      return res.status(401).json({
+        message: 'Not allowed'
+      })
+    }
+    console.log(req.body)
 
-        const title = req.body.title
-        const link  = title.replace(/\s+/g, '-').toLowerCase()
-        const category = req.body.category       
-        const content = req.body.content
-        const date = req.body.date
+    const title = req.body.title
+    const link = title.replace(/\s+/g, '-').toLowerCase()
+    const category = req.body.category
+    const content = req.body.content
+    const date = req.body.date
 
-        database.push({ title, link, content, date, category });
-        getPostsFromDatabase(res)
-    })
+    database.push({ title, link, content, date, category });
+    getPostsFromDatabase(res)
+  })
 })
 exports.getPosts = functions.https.onRequest((req, res) => {
   return cors(req, res, () => {
@@ -56,6 +56,31 @@ exports.getPosts = functions.https.onRequest((req, res) => {
     getPostsFromDatabase(res)
   })
 })
+
+exports.getSinglePost = functions.https.onRequest((req, res) => {
+  return cors(req, res, () => {
+    if (req.method !== 'POST') {
+      return res.status(404).json({
+        message: 'Not allowed'
+      })
+    }
+    let result = {};
+    const link = req.body.link;
+
+    database.orderByChild("link").equalTo(`${link}`).once("value", snapshot => {
+      snapshot.forEach((post) => {
+        result.title = post.val().title
+        result.category = post.val().category
+        result.content = post.val().content
+        result.date = post.val().date
+      });
+
+      console.log(result)
+      res.send(result);
+    })
+  })
+})
+
 exports.deletePost = functions.https.onRequest((req, res) => {
   return cors(req, res, () => {
     if (req.method !== 'DELETE') {
@@ -77,12 +102,12 @@ exports.updatePost = functions.https.onRequest((req, res) => {
       })
     }
     const id = req.body.id
-    admin.database().ref(`/blog/${id}`).update({ 
-        title : req.body.title,
-        link :  req.body.title.replace(/\s+/g, '-').toLowerCase(),
-        category : req.body.category,
-        content : req.body.content,
-        date : req.body.date
+    admin.database().ref(`/blog/${id}`).update({
+      title: req.body.title,
+      link: req.body.title.replace(/\s+/g, '-').toLowerCase(),
+      category: req.body.category,
+      content: req.body.content,
+      date: req.body.date
     })
     getPostsFromDatabase(res)
   })
