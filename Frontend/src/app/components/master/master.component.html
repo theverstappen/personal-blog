@@ -1,65 +1,30 @@
 <div class="wrapper">
   <!-- Sidebar  -->
   <nav id="sidebar">
-    <div id="dismiss">
-      <i class="fas fa-arrow-left"></i>
-    </div>
-
-    <div class="sidebar-header">
-      <h3>Berat Akgül</h3>
-    </div>
-
     <ul class="list-unstyled components">
-      <li class="active">
-        <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false">Home</a>
-        <ul class="collapse list-unstyled" id="homeSubmenu">
-          <li>
-            <a href="#">Home 1</a>
-          </li>
-          <li>
-            <a href="#">Home 2</a>
-          </li>
-          <li>
-            <a href="#">Home 3</a>
-          </li>
-        </ul>
-      </li>
-      <li>
-        <a href="#">About</a>
-        <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false">Pages</a>
-        <ul class="collapse list-unstyled" id="pageSubmenu">
-          <li>
-            <a href="#">Page 1</a>
-          </li>
-          <li>
-            <a href="#">Page 2</a>
-          </li>
-          <li>
-            <a href="#">Page 3</a>
-          </li>
-        </ul>
-      </li>
-      <li>
-        <a href="#">Portfolio</a>
-      </li>
-      <li>
-        <a href="#">Contact</a>
+      <li *ngFor="let menuItem of menu">
+        <div *ngIf="menuItem.link == '/logout'; else default;">
+          <a (click)="logout()">{{menuItem.name}}</a>
+        </div>
+        <ng-template #default >
+            <a routerLink="{{menuItem.link}}" >{{menuItem.name}}</a>
+        </ng-template>
       </li>
     </ul>
   </nav>
-
   <!-- Page Content  -->
   <div id="content">
+    <div class="container sticky-top">
+      <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container-fluid">
 
-    <nav class="navbar navbar-expand-lg sticky-top">
-      <div class="container-fluid">
-
-        <button type="button" id="sidebarCollapse" class="btn">
-          <i class="fas fa-bars"></i>
-        </button>
-      </div>
-    </nav>
-
+          <button type="button" id="sidebarCollapse" class="btn">
+            <i class="fas fa-bars"></i>
+          </button>
+          <p class="site-title">beratakgul</p>
+        </div>
+      </nav>
+    </div>
     <section>
       <my-placeholder name="main"></my-placeholder>
     </section>

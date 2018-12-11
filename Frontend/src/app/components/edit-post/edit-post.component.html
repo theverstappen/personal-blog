@@ -1,0 +1,18 @@
+<my-content placeholder="main">
+    <label for="blogTitle" class="sr-only">Başlık</label>
+    <input [(ngModel)]="blogTitle" name="blogTitle" id="blogTitle" placeholder="Başlık" required autofocus>
+    
+    <label for="blogCategory" class="sr-only">Kategori</label>
+    <input [(ngModel)]="blogCategory" name="blogCategory" id="blogCategory" placeholder="Kategori" required autofocus>
+    
+  <ckeditor [(ngModel)]="mycontent" 
+      #myckeditor="ngModel"
+      name="myckeditor"
+      required
+      [config]="ckeConfig" 
+      debounce="500" 
+      (change)="onChange($event)">
+  </ckeditor>
+  <button (click)="updatePost(blogTitle,blogCategory,mycontent)">Güncelle</button>
+</my-content>
+     

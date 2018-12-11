@@ -1,0 +1,22 @@
+<my-content placeholder="main">
+  <div class="container">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Başlık</th>
+          <th>Kategori</th>
+          <th>Tarih</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let post of posts; let i = index;">
+        <tr>
+          <td>{{post.title}}</td>
+          <td>{{post.category}}</td>
+          <td>{{post.date}}</td>
+          <td><button class="btn float-right" (click)="editPost(post)">Düzenle</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</my-content>
