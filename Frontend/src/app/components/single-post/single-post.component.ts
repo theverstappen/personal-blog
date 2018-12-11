@@ -1,5 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { PostService } from 'src/app/services/post/post.service';
+import { Router } from '@angular/router';
+import { tap, delay } from 'rxjs/operators';
 
 @Component({
   selector: 'app-single-post',
@@ -8,15 +10,32 @@ import { PostService } from 'src/app/services/post/post.service';
 })
 export class SinglePostComponent implements OnInit {
 
-  post : any;
-  constructor(private postService : PostService) { }
+  post: any;
+  link: string;
+
+
+  constructor(private postService: PostService, private router: Router) { }
 
   ngOnInit() {
-    this.getPost();
+    //this.getPost();
+
+    //alert(this.title)
+
+    this.link = this.router.url.replace('/', '');
+    this.getSinglePost()
+
   }
-  getPost(){
+  ngAfterViewInit() {
+
+  }
+  getPost() {
     this.postService.getPost().subscribe(
-      data => { this.post = data; console.log(this.post)}
+      data => { this.post = data; console.log(this.post) }
+    );
+  }
+  getSinglePost() {
+    this.postService.getSinglePost(this.link).subscribe(
+      data => { this.post = data; console.log(data) }
     );
   }
 }

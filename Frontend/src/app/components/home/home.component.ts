@@ -23,7 +23,4 @@ export class HomeComponent implements OnInit {
       () => console.log('done')
     );
   }
-  setPost(post){
-    this.postService.selectedPost(post);
-  }
 }
