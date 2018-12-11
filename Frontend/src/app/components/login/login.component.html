@@ -1,0 +1,12 @@
+<div class="form-align">
+  <div class="form-layout">
+    <form class="form-signin">
+      <h1 class="h3 mb-3 font-weight-normal">Admin Paneli</h1>
+      <label for="inputEmail" class="sr-only">Email address</label>
+      <input [(ngModel)]="email" name="email" type="email" id="inputEmail" class="form-control" placeholder="Email" required autofocus>
+      <label for="inputPassword" class="sr-only">Password</label>
+      <input [(ngModel)]="password" name="password" type="password" id="inputPassword" class="form-control" placeholder="Şifre" required>
+      <button class="btn btn-lg btn-primary btn-block" (click)="login()">Giriş Yap</button>
+    </form>
+  </div>
+</div>

@@ -1,2 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~bootstrap/dist/css/bootstrap.css";
+
+
+html, body {
+    font-family: 'Poppins', sans-serif;
+    background: #f5f6f8;
+    color: #292f33;
+    height: 100%;
+}
+
