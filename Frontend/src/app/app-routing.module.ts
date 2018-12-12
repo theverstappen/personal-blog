@@ -20,11 +20,20 @@ const routes: Routes = [
         outlet: 'master',
         path: '',
         component: HomeComponent
-      }
+      },
+      {
+        path: '',
+        redirectTo: 'blog',
+        pathMatch: 'full'
+      },
+      {
+        path: 'blog',
+        component: HomeComponent,
+      },
     ]
   },
   {
-    path: ':link',
+    path: 'blog/:link',
     component: MasterComponent,
     children: [
       {
@@ -90,12 +99,12 @@ const routes: Routes = [
 })
 export class AppRoutingModule { }
 export const routingComponents = [
-                                  MasterComponent,
-                                  HomeComponent,
-                                  LoginComponent,
-                                  AdminComponent,
-                                  TestComponent,
-                                  AddPostComponent,
-                                  EditPostComponent,
-                                  SinglePostComponent
+  MasterComponent,
+  HomeComponent,
+  LoginComponent,
+  AdminComponent,
+  TestComponent,
+  AddPostComponent,
+  EditPostComponent,
+  SinglePostComponent
 ];
