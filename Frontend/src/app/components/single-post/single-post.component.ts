@@ -19,9 +19,9 @@ export class SinglePostComponent implements OnInit {
   ngOnInit() {
     //this.getPost();
 
-    //alert(this.title)
+    //alert(this.router.url)
 
-    this.link = this.router.url.replace('/', '');
+    this.link = this.router.url.replace('/blog/', '');
     this.getSinglePost()
 
   }

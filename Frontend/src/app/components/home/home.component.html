@@ -1,11 +1,15 @@
 <my-content placeholder="main">
     <div class="container">
         <div class="post" *ngFor="let post of posts; let i = index;">
+            <div class="post-image" style="background-image: url('https://www.extremetech.com/wp-content/uploads/2013/07/Andromeda-Galaxy-640x353.jpg');">
+            </div>
             <div class="post-body">
-                <p class="post-date">{{post.date}}</p>
+                <p class="post-date float-end">{{post.date}}</p>
                 <h5 class="post-title">
-                    <a [routerLink]="['/', post.link]">{{post.title}}</a>
+                    <a [routerLink]="['/blog/', post.link]">{{post.title}}</a>
                 </h5>
+                <!-- <div class="post-content" innerHTML="{{post.content | slice:0:100}}"></div> -->
+
             </div>
         </div>
     </div>

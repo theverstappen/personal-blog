@@ -1,6 +1,8 @@
 <my-content placeholder="main">
-  <div *ngIf="post">
-      {{post.title}} - {{post.category}}
-      <div [innerHTML]="post.content"></div>
+  <div *ngIf="post" class="container">
+    <div class="post-title">
+      {{post.title}}
+    </div>
+    <div [innerHTML]="post.content"></div>
   </div>
 </my-content>

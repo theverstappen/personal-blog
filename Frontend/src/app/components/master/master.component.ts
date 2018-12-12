@@ -12,7 +12,7 @@ export class MasterComponent implements OnInit {
 
     menu = [];
     defaultMenu = [
-        { name: "Blog", link: "/test" },
+        { name: "Blog", link: "/" },
         { name: "Hesaplayıcılar", link: "/test" },
         { name: "Fitness", link: "/test" },
         { name: "Beslenme", link: "/test" },
