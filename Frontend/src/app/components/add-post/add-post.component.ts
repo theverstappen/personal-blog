@@ -1,5 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { PostService } from 'src/app/services/post/post.service';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-post',
@@ -15,10 +17,20 @@ export class AddPostComponent implements OnInit {
   @ViewChild("myckeditor") ckeditor: any;
 
   blogTitle: string;
-  blogCategory: string;
+  blogLink: string;
+  mainImage: string = "";
 
-
-  constructor(private postService : PostService) {
+  
+  categories = [
+    {id: 1, name: "Fitness"},
+    {id: 2, name: "Beslenme"},
+    {id: 3, name: "Muzik"}
+  ];
+  selectedCategory = this.categories[0]
+  constructor(
+    private postService : PostService,
+    private spinner: NgxSpinnerService,
+    private router : Router) {
     this.mycontent = `<p>Blog Yazısı</p>`;
   }
 
@@ -33,11 +45,19 @@ export class AddPostComponent implements OnInit {
     console.log(this.mycontent);
     //this.log += new Date() + "<br />";
   }
-  addNewPost(blogTitle,blogCategory,mycontent){
-    console.log(blogTitle,blogCategory,mycontent);
-    this.postService.addPost(blogTitle,blogCategory,mycontent,'22.10.2019').subscribe(
-      data=> { console.log(data); },
+  addNewPost(blogTitle,blogLink,blogCategory,mycontent,mainImage){
+    console.log(this.selectedCategory.name);
+    /*
+    this.spinner.show();
+    this.postService.addPost(blogTitle,blogLink,blogCategory,mycontent,new Date().toLocaleDateString(),mainImage).subscribe(
+      data=> { 
+        console.log(data); 
+        this.router.navigate(['/admin'])
+        this.spinner.hide();
+      },
       err => console.error(err),
       () => console.log('done'))
+      */
   }
+  
 }

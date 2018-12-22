@@ -1,22 +1,103 @@
 <my-content placeholder="main">
   <div class="container">
-    <table class="table">
-      <thead>
-        <tr>
-          <th>Başlık</th>
-          <th>Kategori</th>
-          <th>Tarih</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody *ngFor="let post of posts; let i = index;">
-        <tr>
-          <td>{{post.title}}</td>
-          <td>{{post.category}}</td>
-          <td>{{post.date}}</td>
-          <td><button class="btn float-right" (click)="editPost(post)">Düzenle</button></td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="tile">
+
+
+      <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active" id="posts-tab" data-toggle="tab" href="#posts" role="tab" aria-controls="posts"
+            aria-selected="true">Yazılar</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="categories-tab" data-toggle="tab" href="#categories" role="tab" aria-controls="categories"
+            aria-selected="false">Kategoriler</a>
+        </li>
+      </ul>
+      <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="posts" role="tabpanel" aria-labelledby="posts-tab">
+          <table class="table mt-4">
+            <thead>
+              <tr>
+                <th>Başlık</th>
+                <th>Kategori</th>
+                <th>Tarih</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody *ngFor="let post of posts; let i = index;">
+              <tr>
+                <td>{{post.title}}</td>
+                <td>{{post.category}}</td>
+                <td>{{post.date}}</td>
+                <td><button class="btn float-right" (click)="editPost(post)">Düzenle</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="tab-pane fade" id="categories" role="tabpanel" aria-labelledby="categories-tab">
+          <div class="card card-small mb-3 mt-4">
+            <div class="card-header border-bottom">
+              <h6 class="m-0">Kategoriler</h6>
+            </div>
+            <div class="card-body p-0">
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item px-0 pb-2">
+                  <div class="custom-control mb-1" *ngFor="let c of categories; let i = index;">
+                    <span>{{c.name}}</span>
+                    <span style="float: right;" [attr.data-target]="'#Delete-'+i" data-toggle="modal">
+                      <i class="fa fa-trash"></i>
+                    </span>
+                    <div class="modal fade" id="Delete-{{ i }}" tabindex="-1" role="dialog" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="Heading">Kategori silme</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            <div class="alert alert-danger"><span class="glyphicon glyphicon-warning-sign"></span> Bu
+                              kategoriyi silmek
+                              istediğinizden emin misiniz ?</div>
+                          </div>
+                          <div class="modal-footer ">
+                            <button (click)="deleteCategoryByID(c.id)" type="button" class="btn btn-primary"
+                              data-dismiss="modal"><span class="glyphicon glyphicon-ok-sign"></span>Evet</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span>Hayır</button>
+                          </div>
+                        </div>
+                        <!-- /.modal-content -->
+                      </div>
+                      <!-- /.modal-dialog -->
+                    </div>
+
+                  </div>
+                </li>
+                <li class="list-group-item d-flex px-0">
+                  <form #formRef="ngForm" style="width: 100%;" >
+                    <div class="input-group">
+                      <input type="text" class="form-control" placeholder="Yeni kategori" [(ngModel)]="newCategory"
+                        name="newCategory_" #nameRef="ngModel" required autocomplete="false">
+                      <div class="input-group-append">
+                        <button class="btn btn-white px-2" type="button" (AddIfValid)="addCategory()"> Ekle </button>
+                      </div>
+                    </div>
+                    <div class="input-group text-danger">
+                      <span *ngIf="nameRef.dirty  && nameRef.errors?.required">Kategori adı girmelisiniz</span>&nbsp;
+                    </div>
+                  </form>
+                </li>
+
+
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+
 </my-content>
+<ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="medium" color="#fff" type="ball-spin">
+</ngx-spinner>

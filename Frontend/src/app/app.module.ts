@@ -8,16 +8,19 @@ import { environment } from '../environments/environment';
 import { CKEditorModule } from 'ng2-ckeditor';
 import { HttpClientModule } from '@angular/common/http';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { AddIfValidDirective } from './directives/add-if-valid.directive';
 
 
 import { AppRoutingModule, routingComponents } from './app-routing.module';
 import { AppComponent } from './app.component';
 
-
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {MatSnackBarModule} from '@angular/material/snack-bar';
 @NgModule({
   declarations: [
     AppComponent,
-    routingComponents
+    routingComponents,
+    AddIfValidDirective
   ],
   imports: [
     BrowserModule,
@@ -28,7 +31,9 @@ import { AppComponent } from './app.component';
     AngularFireAuthModule,
     CKEditorModule,
     HttpClientModule,
-    NgxSpinnerModule
+    NgxSpinnerModule,
+    BrowserAnimationsModule,
+    MatSnackBarModule
   ],
   providers: [],
   bootstrap: [AppComponent]

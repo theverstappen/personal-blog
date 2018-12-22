@@ -1,18 +1,39 @@
 <my-content placeholder="main">
-    <label for="blogTitle" class="sr-only">Başlık</label>
-    <input [(ngModel)]="blogTitle" name="blogTitle" id="blogTitle" placeholder="Başlık" required autofocus>
-    
-    <label for="blogCategory" class="sr-only">Kategori</label>
-    <input [(ngModel)]="blogCategory" name="blogCategory" id="blogCategory" placeholder="Kategori" required autofocus>
-    
-  <ckeditor [(ngModel)]="mycontent" 
-      #myckeditor="ngModel"
-      name="myckeditor"
-      required
-      [config]="ckeConfig" 
-      debounce="500" 
-      (change)="onChange($event)">
-  </ckeditor>
-  <button (click)="updatePost(blogTitle,blogCategory,mycontent)">Güncelle</button>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-2 col-md-2 col-sm-2"><label for="blogTitle" class="adminLabel">Başlık: </label></div>
+            <div class="col-lg-10 col-md-10 col-sm-10: "><input [(ngModel)]="blogTitle" name="blogTitle" id="blogTitle"
+                    class="adminInput" placeholder="Başlık" required autofocus>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-2 col-md-2 col-sm-2"><label for="blogLink" class="adminLabel">Link: </label></div>
+            <div class="col-lg-10 col-md-10 col-sm-10"><input [(ngModel)]="blogLink" name="blogLink" id="blogLink"
+                    class="adminInput" placeholder="Link" required autofocus>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-2 col-md-2 col-sm-2"> <label for="blogCategory" class="adminLabel">Kategori: </label></div>
+            <div class="col-lg-01 col-md-10 col-sm-10"> <input [(ngModel)]="blogCategory" name="blogCategory" id="blogCategory"
+                    class="adminInput" placeholder="Kategori" required autofocus>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-2 col-md-2 col-sm-2">
+                <label for="mainImage" class="adminLabel">Ana resim: </label>
+            </div>
+            <div class="col-lg-10 col-md-10 col-sm-10">
+                <input [(ngModel)]="mainImage" name="mainImage" id="mainImage" class="adminInput" placeholder="Ana resim"
+                    required autofocus>
+            </div>
+        </div>
+        <ckeditor [(ngModel)]="mycontent" #myckeditor="ngModel" name="myckeditor" required [config]="ckeConfig"
+            debounce="500" (change)="onChange($event)">
+        </ckeditor>
+        <div id="buttonWrapper">
+            <button class="btn btn-primary adminButton"(click)="updatePost(blogTitle,blogLink,blogCategory,mycontent,mainImage)">Güncelle</button>
+            <button class="btn btn-danger adminButton"(click)="deletePost()">Sil</button>
+        </div>
+    </div>
 </my-content>
-     
+<ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="medium" color="#fff" type="ball-spin"></ngx-spinner>

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { LoginService } from '../../services/login/login.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 declare var $: any;
 
 @Component({
@@ -14,8 +15,6 @@ export class MasterComponent implements OnInit {
     defaultMenu = [
         { name: "Blog", link: "/" },
         { name: "Hesaplayıcılar", link: "/test" },
-        { name: "Fitness", link: "/test" },
-        { name: "Beslenme", link: "/test" },
         { name: "Hakkında", link: "/test" }
     ];
     adminMenu = [
@@ -23,7 +22,10 @@ export class MasterComponent implements OnInit {
         { name: "Yeni Yazı ekle",link: "/admin/add-post" },
         { name: "Cikis yap",link: "/logout" }
     ]
-    constructor(private router: Router, private loginService : LoginService) {
+    constructor(private router: Router, 
+                private loginService : LoginService,
+                private spinner: NgxSpinnerService) {
+
         if (this.router.url.startsWith("/admin")) {
             this.menu = this.adminMenu;
         }
@@ -53,7 +55,12 @@ export class MasterComponent implements OnInit {
         });
     }
     logout(){
+        this.spinner.show();
         this.loginService.logout();
+        setTimeout(() => {
+            this.spinner.hide();
+        
+    }, 1000);
         this.router.navigate[''];
     }
 

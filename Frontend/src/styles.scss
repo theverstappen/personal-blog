@@ -1,5 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~bootstrap/dist/css/bootstrap.css";
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
 
 html, body {
@@ -8,6 +9,24 @@ html, body {
     color: #292f33;
     height: 100%;
 }
+.adminInput{
+    width: 100%;
+    margin-bottom: 23px;
+}
+.adminLabel {
+    padding-top: 4px;
+}
+.adminButton {
+    width: 50%;
+    margin-top: 25px;
+    margin-right: auto;
+    margin-bottom: 0px;
+    margin-left: auto;
+    display:block
+}
+#buttonWrapper {
+    text-align: center;
+  }
 @media (max-width: 767px) { .content-image  { max-width: 380px; } }
 @media (min-width: 768px) and (max-width: 991px) {.content-image  { width: 700px; } }
 @media (min-width: 992px) and (max-width: 1199px) {.content-image{ width: 600px; }}
