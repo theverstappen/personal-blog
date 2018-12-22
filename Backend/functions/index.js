@@ -3,13 +3,14 @@ const cors = require('cors')({ origin: true });
 const admin = require('firebase-admin');
 admin.initializeApp();
 
-const database = admin.database().ref('/blog');
+const dbBlogPosts = admin.database().ref('/blog/posts');
+const dbCategory = admin.database().ref('/blog/categories');
 //const databaseApp = admin.database().ref('/appointments');
 
 const getPostsFromDatabase = (res) => {
   let posts = [];
 
-  return database.on('value', (snapshot) => {
+  return dbBlogPosts.on('value', (snapshot) => {
     snapshot.forEach((post) => {
       posts.push({
         id: post.key,
@@ -17,7 +18,8 @@ const getPostsFromDatabase = (res) => {
         link: post.val().link,
         category: post.val().category,
         content: post.val().content,
-        date: post.val().date
+        date: post.val().date,
+        mainImage: post.val().mainImage
       });
     });
     res.status(200).json(posts);
@@ -27,6 +29,33 @@ const getPostsFromDatabase = (res) => {
     })
   })
 };
+const getCategoriesFromDatabase = (res) => {
+  let categories = [];
+
+  return dbCategory.on('value', (snapshot) => {
+    snapshot.forEach((category) => {
+      categories.push({
+        id: category.key,
+        name: category.val().name
+      });
+    });
+    res.status(200).json(categories);
+  }, (error) => {
+    res.status(error.code).json({
+      message: `Something went wrong. ${error.message}`
+    })
+  })
+};
+
+const sendResult = (res) => {
+  return dbBlogPosts.on('value', (snapshot) => {
+    res.status(200).json('Success');
+  }, (error) => {
+    res.status(error.code).json({
+      message: `Something went wrong. ${error.message}`
+    })
+  })
+}
 exports.addPost = functions.https.onRequest((req, res) => {
   return cors(req, res, () => {
     if (req.method !== 'POST') {
@@ -37,15 +66,17 @@ exports.addPost = functions.https.onRequest((req, res) => {
     console.log(req.body)
 
     const title = req.body.title
-    const link = title.replace(/\s+/g, '-').toLowerCase()
+    const link = req.body.link
     const category = req.body.category
     const content = req.body.content
     const date = req.body.date
+    const mainImage = req.body.mainImage
 
-    database.push({ title, link, content, date, category });
-    getPostsFromDatabase(res)
+    dbBlogPosts.push({ title, link, content, date, category, mainImage });
+    sendResult(res)
   })
 })
+
 exports.getPosts = functions.https.onRequest((req, res) => {
   return cors(req, res, () => {
     if (req.method !== 'GET') {
@@ -67,12 +98,14 @@ exports.getSinglePost = functions.https.onRequest((req, res) => {
     let result = {};
     const link = req.body.link;
 
-    database.orderByChild("link").equalTo(`${link}`).once("value", snapshot => {
+    // Getting post with the requested link
+    dbBlogPosts.orderByChild("link").equalTo(`${link}`).once("value", snapshot => {
       snapshot.forEach((post) => {
         result.title = post.val().title
         result.category = post.val().category
         result.content = post.val().content
         result.date = post.val().date
+        result.mainImage = post.val().mainImage
       });
 
       console.log(result)
@@ -89,8 +122,10 @@ exports.deletePost = functions.https.onRequest((req, res) => {
       })
     }
     const id = req.query.id
-    admin.database().ref(`/blog/${id}`).remove()
-    getPostsFromDatabase(res)
+    admin.database().ref(`/blog/posts/${id}`).remove()
+
+    sendResult(res);
+
   })
 })
 
@@ -102,16 +137,64 @@ exports.updatePost = functions.https.onRequest((req, res) => {
       })
     }
     const id = req.body.id
-    admin.database().ref(`/blog/${id}`).update({
+    admin.database().ref(`/blog/posts/${id}`).update({
       title: req.body.title,
-      link: req.body.title.replace(/\s+/g, '-').toLowerCase(),
+      link: req.body.link,
       category: req.body.category,
       content: req.body.content,
-      date: req.body.date
+      date: req.body.date,
+      mainImage: req.body.mainImage,
     })
-    getPostsFromDatabase(res)
+    sendResult(res)
   })
 })
+exports.addCategory = functions.https.onRequest((req, res) => {
+  return cors(req, res, () => {
+    if (req.method !== 'POST') {
+      return res.status(401).json({
+        message: 'Not allowed'
+      })
+    }
+    console.log(req.body)
+    const name = req.body.name;
+
+    dbCategory.orderByChild("name").equalTo(name).once("value", snapshot => {
+      if (snapshot.exists()) {
+        res.send('Bu isimde kayıtlı bir kategori mevcut !');
+      }
+      else {
+        dbCategory.push({ name });
+        getCategoriesFromDatabase(res)
+      }
+    })
+  })
+})
+
+exports.deleteCategory = functions.https.onRequest((req, res) => {
+  return cors(req, res, () => {
+    if (req.method !== 'DELETE') {
+      return res.status(401).json({
+        message: 'Not allowed'
+      })
+    }
+    const id = req.query.id
+    admin.database().ref(`/blog/categories/${id}`).remove()
+    getCategoriesFromDatabase(res)
+  })
+})
+
+exports.getCategories = functions.https.onRequest((req, res) => {
+  return cors(req, res, () => {
+    if (req.method !== 'GET') {
+      return res.status(404).json({
+        message: 'Not allowed'
+      })
+    }
+    getCategoriesFromDatabase(res)
+  })
+})
+
+
 // const getAppointmentsFromDatabase = (res) => {
 //   let appointments = [];
 

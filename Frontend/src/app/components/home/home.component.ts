@@ -23,12 +23,24 @@ export class HomeComponent implements OnInit {
 
     this.getPosts();
 
-
+    //alert(new Date().toLocaleDateString())
   }
 
   getPosts(){
     this.postService.getPosts().subscribe(
-      data => { this.posts = data; this.spinner.hide(); console.log(data); },
+      data => { 
+        this.posts = data; 
+        this.spinner.hide(); 
+        console.log(data); 
+
+        // Yazıları tarihe gore sıralama
+        this.posts.sort((a,b) => {
+          a = a.date.split('.').reverse().join('');
+          b = b.date.split('.').reverse().join('');
+          //return a < b ? 1 : a > b ? -1 : 0;
+          return b.localeCompare(a);         // <-- alternative 
+        });
+      },
       err => console.error(err),
       () => console.log('done')
     );
