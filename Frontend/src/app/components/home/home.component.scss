@@ -29,17 +29,22 @@
 }
 
 .post-category  {
-    top: .9375rem;
-    right: .9375rem;
-    position: absolute;
+     
     text-transform: uppercase;
     text-decoration: none;
-    color: #fff;
-    background-color: #393f4d;
-    padding: .150rem .5rem 0.150rem .5rem;
+    color: #3d5170 !important;
+    //background-color: #393f4d;
+    //padding: .150rem .5rem 0.150rem .5rem;
     border-radius: 4px;
-    font-size: 75%;
-    font-weight: 500;
+    font-size: 12px;
+    float: left;
+    font-weight: bold;
+}
+.post-date {
+    color: #3d5170 !important;
+    font-weight: 600;
+    font-size: 12px;
+    float: right;
 }
 .post-author {
     -webkit-transform: translateY(50%);
@@ -66,16 +71,15 @@
 .post-body{
     padding: 2.1875rem 1.5625rem 1.5625rem 1.5625rem;
 }
+.post-title {
+    margin-top: 35px;
+} 
 .post-title a{
     font-weight: bold;
     text-decoration: none;
     color: #3d5170!important;
 }
-.post-date {
-    color: #3d5170 !important;
-    font-weight: 600;
-    font-size: 12px;
-}
+
 @media (max-width: 767px) { 
     .container { max-width: 600px; }
     /* your other css codes */

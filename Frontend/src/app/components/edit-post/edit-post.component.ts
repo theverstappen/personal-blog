@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { PostService } from 'src/app/services/post/post.service';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-edit-post',
@@ -13,7 +14,8 @@ export class EditPostComponent implements OnInit {
   constructor(
     private postService : PostService, 
     private router:  Router,
-    private spinner: NgxSpinnerService) { }
+    private spinner: NgxSpinnerService,
+    private route: ActivatedRoute) { }
 
   name = 'ng2-ckeditor';
   ckeConfig: any;
@@ -23,18 +25,25 @@ export class EditPostComponent implements OnInit {
 
   blogTitle: string;
   blogLink: string;
-  blogCategory: string;
+  selectedCategory: string;
   mainImage: string = "";
 
-
-
   post: any;
+  postID: any;
+
+  categories: any;
+
+
   ngOnInit() {
+    this.route.params.subscribe(params => {
+      this.postID = params;
+   });
+
     this.getPost();
-  
+    this.getCategories();  
   }
   getPost(){
-    this.postService.getPost().subscribe(
+    this.postService.getSinglePostByID(this.postID.id).subscribe(
       data => { 
         this.post = data; 
         console.log(this.post);
@@ -42,18 +51,20 @@ export class EditPostComponent implements OnInit {
         this.blogTitle = this.post.title;
         this.blogLink = this.post.link;
         this.mainImage = this.post.mainImage;
-        this.blogCategory = this.post.title;
+        this.selectedCategory = this.post.category;
         this.mycontent = this.post.content;
       }
     );
   }
-  onChange($event: any): void {
-    console.log(this.mycontent);
-    //this.log += new Date() + "<br />";
-  }
-  updatePost(blogTitle,blogLink,blogCategory,mycontent,mainImage){
+  updatePost(){
     this.spinner.show();
-    this.postService.updatePost(blogTitle,blogLink,blogCategory,mycontent,this.post.date,this.post.id,mainImage).subscribe(
+    this.postService.updatePost(this.blogTitle,
+                                this.blogLink,
+                                this.selectedCategory,
+                                this.mycontent,
+                                this.post.date,
+                                this.post.id,
+                                this.mainImage).subscribe(
       data=> { 
         console.log(data);
         this.router.navigate(['/admin']);
@@ -69,5 +80,18 @@ export class EditPostComponent implements OnInit {
       this.router.navigate(['/admin'])
       this.spinner.hide();
     })
+  }
+  getCategories() {
+    this.spinner.show();
+    this.postService.getCategories().subscribe(
+      data => {
+        this.categories = data;
+        console.log(data);
+        this.selectedCategory = this.categories[0].name;
+        this.spinner.hide();
+      },
+      err => console.error(err),
+      () => console.log('done')
+    );
   }
 }

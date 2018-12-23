@@ -17,7 +17,6 @@ const getPostsFromDatabase = (res) => {
         title: post.val().title,
         link: post.val().link,
         category: post.val().category,
-        content: post.val().content,
         date: post.val().date,
         mainImage: post.val().mainImage
       });
@@ -88,7 +87,7 @@ exports.getPosts = functions.https.onRequest((req, res) => {
   })
 })
 
-exports.getSinglePost = functions.https.onRequest((req, res) => {
+exports.getSinglePostByLink = functions.https.onRequest((req, res) => {
   return cors(req, res, () => {
     if (req.method !== 'POST') {
       return res.status(404).json({
@@ -107,6 +106,31 @@ exports.getSinglePost = functions.https.onRequest((req, res) => {
         result.date = post.val().date
         result.mainImage = post.val().mainImage
       });
+
+      console.log(result)
+      res.send(result);
+    })
+  })
+})
+exports.getSinglePostByID = functions.https.onRequest((req, res) => {
+  return cors(req, res, () => {
+    if (req.method !== 'POST') {
+      return res.status(404).json({
+        message: 'Not allowed'
+      })
+    }
+    let result = {};
+    const id = req.body.id;
+
+    // Getting post with the requested id
+    dbBlogPosts.child(id).on("value", snapshot => {
+      result.id = snapshot.key
+      result.title = snapshot.val().title
+      result.link = snapshot.val().link
+      result.category = snapshot.val().category
+      result.content = snapshot.val().content
+      result.date = snapshot.val().date
+      result.mainImage = snapshot.val().mainImage
 
       console.log(result)
       res.send(result);
