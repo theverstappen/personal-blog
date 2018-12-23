@@ -4,7 +4,7 @@ import { PostService } from 'src/app/services/post/post.service';
 import { Router } from '@angular/router';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { MatSnackBar } from '@angular/material';
-import { NgForm } from '@angular/forms';
+
 
 @Component({
   selector: 'app-admin',
@@ -42,14 +42,21 @@ export class AdminComponent implements OnInit {
   }
   getPosts() {
     this.postService.getPosts().subscribe(
-      data => { this.posts = data; this.spinner.hide(); console.log(data); },
+      data => { 
+        this.posts = data; 
+        this.spinner.hide(); 
+        console.log(data); 
+        this.posts = this.postService.sortPosts(this.posts);
+      
+      },
       err => console.error(err),
       () => console.log('done')
     );
   }
-  editPost(post) {
-    this.postService.selectedPost(post);
-    this.router.navigate(['/admin/edit-post']);
+  editPost(id,link) {
+    //this.postService.selectedPost(id);
+    this.router.navigate(['/admin/edit-post', id]);
+
   }
   deleteCategoryByID(id) {
     this.spinner.show();

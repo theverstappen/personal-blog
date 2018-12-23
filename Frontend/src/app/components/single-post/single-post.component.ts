@@ -21,13 +21,13 @@ export class SinglePostComponent implements OnInit {
   ngOnInit() {
     this.spinner.show();
     this.link = this.router.url.replace('/blog/', '');
-    this.getSinglePost()
+    this.getPost()
   }
   ngAfterViewInit() {
 
   }
-  getSinglePost() {
-    this.postService.getSinglePost(this.link).subscribe(
+  getPost() {
+    this.postService.getSinglePostByLink(this.link).subscribe(
       data => { 
         this.post = data; 
         this.spinner.hide();

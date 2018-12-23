@@ -1,23 +1,20 @@
 <my-content placeholder="main">
     <div class="container">
         <div class="post" *ngFor="let post of posts; let i = index;">
-            <div class="post-image" *ngIf="post.mainImage != ''"
-            [ngStyle]="{'background-image': 'url('+post.mainImage+')'}">
+            <div class="post-image" 
+                *ngIf="post.mainImage != ''" 
+                [ngStyle]="{'background-image': 'url('+post.mainImage+')'}">
             </div>
-           
             <div class="post-body">
-                <p class="post-date float-end">{{post.date}}</p>
+                <span class="post-category">{{post.category}}</span>
+                <span class="post-date">{{post.date}}</span>
                 <h5 class="post-title">
                     <a [routerLink]="['/blog/', post.link]">{{post.title}}</a>
                 </h5>
+
                 <!-- <div class="post-content" innerHTML="{{post.content | slice:0:100}}"></div> -->
             </div>
         </div>
     </div>
 </my-content>
-<ngx-spinner 
-    bdColor="rgba(51, 51, 51, 0.8)" 
-    size="medium" 
-    color="#fff" 
-    type="ball-spin">
-</ngx-spinner>
+<ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="medium" color="#fff" type="ball-spin"></ngx-spinner>

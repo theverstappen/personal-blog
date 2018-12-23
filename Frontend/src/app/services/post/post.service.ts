@@ -17,9 +17,13 @@ export class PostService {
   getPost() {
     return of(this.post);
   }
-  getSinglePost(link) {
+  getSinglePostByLink(link) {
     let data = { 'link': link }
-    return this.http.post('https://us-central1-my-website-208e4.cloudfunctions.net/getSinglePost', data);
+    return this.http.post('https://us-central1-my-website-208e4.cloudfunctions.net/getSinglePostByLink', data);
+  }
+  getSinglePostByID(id) {
+    let data = { 'id': id }
+    return this.http.post('https://us-central1-my-website-208e4.cloudfunctions.net/getSinglePostByID', data);
   }
   getPosts() {
     return this.http.get('https://us-central1-my-website-208e4.cloudfunctions.net/getPosts');
@@ -49,6 +53,13 @@ export class PostService {
   }
   deletePost(id) {
     return this.http.delete('https://us-central1-my-website-208e4.cloudfunctions.net/deletePost?id=' + id);
+  }
+  sortPosts(posts){
+    return posts.sort((a,b) => {
+      a = a.date.split('.').reverse().join('');
+      b = b.date.split('.').reverse().join('');
+      return b.localeCompare(a);
+    });
   }
 
   // Category Operations

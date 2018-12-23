@@ -15,15 +15,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.spinner.show();
- 
-    // setTimeout(() => {
-    //     /** spinner ends after 5 seconds */
-        
-    // }, 600);
-
     this.getPosts();
-
-    //alert(new Date().toLocaleDateString())
   }
 
   getPosts(){
@@ -34,12 +26,7 @@ export class HomeComponent implements OnInit {
         console.log(data); 
 
         // Yazıları tarihe gore sıralama
-        this.posts.sort((a,b) => {
-          a = a.date.split('.').reverse().join('');
-          b = b.date.split('.').reverse().join('');
-          //return a < b ? 1 : a > b ? -1 : 0;
-          return b.localeCompare(a);         // <-- alternative 
-        });
+        this.posts = this.postService.sortPosts(this.posts);
       },
       err => console.error(err),
       () => console.log('done')

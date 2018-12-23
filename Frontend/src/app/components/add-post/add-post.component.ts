@@ -2,6 +2,8 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { PostService } from 'src/app/services/post/post.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { Router } from '@angular/router';
+import { MatSnackBar } from '@angular/material';
+
 
 @Component({
   selector: 'app-add-post',
@@ -9,7 +11,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./add-post.component.scss']
 })
 export class AddPostComponent implements OnInit {
-  
+
   name = 'ng2-ckeditor';
   ckeConfig: any;
   mycontent: string;
@@ -20,44 +22,58 @@ export class AddPostComponent implements OnInit {
   blogLink: string;
   mainImage: string = "";
 
-  
-  categories = [
-    {id: 1, name: "Fitness"},
-    {id: 2, name: "Beslenme"},
-    {id: 3, name: "Muzik"}
-  ];
-  selectedCategory = this.categories[0]
+
+  categories: any;
+  selectedCategory: string;
+
   constructor(
-    private postService : PostService,
+    private postService: PostService,
     private spinner: NgxSpinnerService,
-    private router : Router) {
+    private router: Router,
+    private snackBar: MatSnackBar) {
     this.mycontent = `<p>Blog Yazısı</p>`;
   }
 
   ngOnInit() {
     this.ckeConfig = {
-      allowedContent: false,  
+      allowedContent: false,
       forcePasteAsPlainText: true
     };
+    this.getCategories();
   }
 
-  onChange($event: any): void {
-    console.log(this.mycontent);
-    //this.log += new Date() + "<br />";
-  }
-  addNewPost(blogTitle,blogLink,blogCategory,mycontent,mainImage){
-    console.log(this.selectedCategory.name);
-    /*
+  addNewPost() {
     this.spinner.show();
-    this.postService.addPost(blogTitle,blogLink,blogCategory,mycontent,new Date().toLocaleDateString(),mainImage).subscribe(
-      data=> { 
-        console.log(data); 
+    this.postService.addPost(this.blogTitle, 
+                             this.blogLink, 
+                             this.selectedCategory, 
+                             this.mycontent, 
+                             new Date().toLocaleDateString(), 
+                             this.mainImage).subscribe(
+      data => {
+        console.log(data);
         this.router.navigate(['/admin'])
         this.spinner.hide();
+        this.snackBar.open("Yeni yazı eklendi !", "Kapat", {
+          duration: 2000,
+        });
       },
       err => console.error(err),
       () => console.log('done'))
-      */
+
   }
-  
+  getCategories() {
+    this.spinner.show();
+    this.postService.getCategories().subscribe(
+      data => {
+        this.categories = data;
+        console.log(data);
+        this.selectedCategory = this.categories[0].name;
+        this.spinner.hide();
+      },
+      err => console.error(err),
+      () => console.log('done')
+    );
+  }
+
 }

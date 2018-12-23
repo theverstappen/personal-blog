@@ -69,7 +69,7 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'admin/edit-post',
+    path: 'admin/edit-post/:id',
     component: MasterComponent,
     children: [
       {
