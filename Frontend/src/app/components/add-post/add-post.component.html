@@ -42,7 +42,7 @@
                 </div>
             </div>
 
-            <ckeditor [(ngModel)]="mycontent" #myckeditor="ngModel" name="myckeditor" required [config]="ckeConfig" debounce="500" (change)="onChange($event)">
+            <ckeditor [(ngModel)]="mycontent" #myckeditor="ngModel" name="myckeditor" required [config]="ckeConfig" debounce="500">
             </ckeditor>
             <div class="input-group text-danger">
                 <span *ngIf="myckeditor.dirty  && myckeditor.errors?.required">Yazının icerigi boş bırakılamaz</span>&nbsp;

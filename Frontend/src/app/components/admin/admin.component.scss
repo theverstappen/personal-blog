@@ -17,6 +17,12 @@
   flex: 1 1 auto;
   padding-right: 1.25rem;
 }
+.borderless th {
+  border: none;
+}
+.posts td{
+  cursor: pointer;
+}
 @media (max-width: 767px) { 
     .container { max-width: 600px; }
     /* your other css codes */
